@@ -1,0 +1,29 @@
+services:
+  xdcc_download_server:
+    build:
+      context: https://github.com/luizosorio/xdcc_download_server.git
+    container_name: xdcc_download_server
+    hostname: xdcc_download_server
+    restart: always
+    ports:
+      - 9838:8080
+    volumes:
+      - /path/to/my/downloaded_files:/data/
+    environment:
+      - IRC_SERVER=irc.rizon.net
+      - IRC_NICK=ghost_rider
+      - IRC_CHANNEL=#AnimeNSK
+      - PROGRESS_INTERVAL=1
+
+  ansk_project:
+    build: ./ansk_project
+    container_name: ansk_project
+    hostname: ansk_project
+    restart: "no"
+    environment:
+            IDS: ${IDS}
+            BOT: ${BOT}
+    volumes:
+      - /path/to/my/downloaded_files:/data/
+    depends_on:
+      - xdcc_download_server
